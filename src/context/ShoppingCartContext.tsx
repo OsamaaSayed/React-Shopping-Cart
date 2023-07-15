@@ -1,12 +1,12 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 
+import ShoppingCart from "../components/ShoppingCart";
+
 type ShoppingCartProviderProps = {
   children: ReactNode;
 };
 
 type ShoppingCartContext = {
-  //   openCart: () => void;
-  //   closeCart: () => void;
   toggleCart: () => void;
   getItemQuantity: (id: number) => number;
   increaseCartQuantity: (id: number) => void;
@@ -34,8 +34,6 @@ export const ShoppingCartProvider = ({
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  //   const openCart = ()=> setIsOpen(true);
-  //   const closeCart = ()=> setIsOpen(false);
   const toggleCart = () => setIsOpen((prevState) => !prevState);
 
   const cartQuantity = cartItems.reduce(
@@ -58,16 +56,24 @@ export const ShoppingCartProvider = ({
         return [...currItems, { id, quantity: 1 }];
       } else {
         return currItems.map((item) => {
-          return { ...item, quantity: item.quantity + 1 };
+          if (item.id === id) {
+            return { ...item, quantity: item.quantity + 1 };
+          } else {
+            return item;
+          }
         });
       }
     });
   }
 
-  function decreaseCartQuantity(_: number) {
+  function decreaseCartQuantity(id: number) {
     setCartItems((currItems) => {
       return currItems.map((item) => {
-        return { ...item, quantity: item.quantity - 1 };
+        if (item.id === id) {
+          return { ...item, quantity: item.quantity - 1 };
+        } else {
+          return item;
+        }
       });
     });
   }
@@ -79,19 +85,18 @@ export const ShoppingCartProvider = ({
   return (
     <ShoppingCartContext.Provider
       value={{
-        getItemQuantity,
-        increaseCartQuantity,
-        decreaseCartQuantity,
-        removeFromCart,
-        // openCart,
-        // closeCart,
-        toggleCart,
-        cartItems,
-        cartQuantity,
-        isOpen,
+        getItemQuantity, //~ StoreItem
+        increaseCartQuantity, //~ StoreItem
+        decreaseCartQuantity, //~ StoreItem
+        removeFromCart, //~ StoreItem , CartItem
+        toggleCart, //~ Navbar , ShoppingCart
+        cartItems, //~ ShoppingCart
+        cartQuantity, //~ Navbar
+        isOpen, //~ ShoppingCart
       }}
     >
       {children}
+      <ShoppingCart />
     </ShoppingCartContext.Provider>
   );
 };

@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useShoppingCart } from "./../context/ShoppingCartContext";
 
 const Navbar = () => {
-  const { toggleCart, isOpen, cartQuantity } = useShoppingCart();
+  const { toggleCart, cartQuantity } = useShoppingCart();
 
   return (
     <NavbarBS sticky="top" className="bg-white shadow-sm mb-3">
