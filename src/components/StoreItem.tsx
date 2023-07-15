@@ -1,6 +1,8 @@
-import { Card, Button } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 import { formatCurrency } from "./../utils/formatCurrency";
+import { useShoppingCart } from "./../context/ShoppingCartContext";
 
 type storeItemProps = {
   id: number;
@@ -10,7 +12,13 @@ type storeItemProps = {
 };
 
 const StoreItem = ({ id, name, price, imgUrl }: storeItemProps) => {
-  const quantity = 10;
+  const {
+    getItemQuantity,
+    increaseCartQuantity,
+    decreaseCartQuantity,
+    removeFromCart,
+  } = useShoppingCart();
+  const quantity = getItemQuantity(id);
   return (
     <Card className="h-100">
       <Card.Img
@@ -26,7 +34,9 @@ const StoreItem = ({ id, name, price, imgUrl }: storeItemProps) => {
         </Card.Title>
         <div className="mt-auto">
           {!quantity ? (
-            <Button className="w-100">+ Add To Cart</Button>
+            <Button onClick={() => increaseCartQuantity(id)} className="w-100">
+              + Add To Cart
+            </Button>
           ) : (
             <div
               className="d-flex flex-column align-items-center"
@@ -36,13 +46,25 @@ const StoreItem = ({ id, name, price, imgUrl }: storeItemProps) => {
                 className="d-flex justify-content-center align-items-center"
                 style={{ gap: "0.5rem" }}
               >
-                <Button>-</Button>
+                <Button
+                  className={` ${quantity === 1 ? "disabled" : ""}`}
+                  onClick={() => decreaseCartQuantity(id)}
+                >
+                  -
+                </Button>
                 <div>
-                <span className="fs-3">{quantity}</span> <span>in cart</span>
+                  <span className="fs-3">{quantity}</span> <span>in cart</span>
                 </div>
-                <Button>+</Button>
+                <Button onClick={() => increaseCartQuantity(id)}>+</Button>
               </div>
-              <Button variant="danger" size="sm" className="w-100">Remove</Button>
+              <Button
+                onClick={() => removeFromCart(id)}
+                variant="danger"
+                size="sm"
+                className="w-100"
+              >
+                Remove
+              </Button>
             </div>
           )}
         </div>

@@ -1,16 +1,19 @@
-import { Container } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
 import { Routes, Route } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Store from "./pages/Store";
 import About from "./pages/About";
+
+import Navbar from "./components/Navbar";
+
+import { ShoppingCartProvider } from "./context/ShoppingCartContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <>
+    <ShoppingCartProvider>
       <Navbar />
       <Container className="mb-4">
         <Routes>
@@ -19,7 +22,7 @@ function App() {
           <Route path="/about" element={<About />} />
         </Routes>
       </Container>
-    </>
+    </ShoppingCartProvider>
   );
 }
 
