@@ -23,8 +23,8 @@ const Navbar = () => {
         {cartQuantity > 0 && (
           <Button
             onClick={toggleCart}
-            className="rounded-circle"
-            variant="outline-primary"
+            className=""
+            variant=""
             style={{ width: "3rem", height: "3rem", position: "relative" }}
           >
             <svg
@@ -48,8 +48,10 @@ const Navbar = () => {
                 width: "1.2rem",
                 height: "1.2rem",
                 position: "absolute",
-                top: 3,
-                right: 8,
+                top: 0,
+                right: 3,
+                padding:"0.7rem",
+                fontSize:14
               }}
             >
               {cartQuantity}
